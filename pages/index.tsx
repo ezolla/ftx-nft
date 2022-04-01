@@ -7,28 +7,53 @@ import CollectionCard from 'components/collections/CollectionCard'
 import { Collection } from 'safety/interfaces'
 
 interface CollectionsResponse {
-  collections: {
-    success: boolean
-    result: {
-      count: number
-      collections: Collection[]
-    }
+  success: boolean
+  result: {
+    count: number
+    collections: Collection[]
   }
 }
 
-const Home = (props: CollectionsResponse) => {
+const Home = () => {
   // State
-  const [collectionsData, setCollectionsData] = useState<Collection[] | null>(
-    null
-  )
+  const [collections, setCollections] = useState<Collection[] | null>(null)
+  const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
-    if (props.collections.success) {
-      console.log('Collections success!')
-      setCollectionsData(props.collections.result.collections)
-    } else {
-      console.log('Throw an error notification')
+    // Start loading
+    setLoading(true)
+
+    // Fetches collections
+    const fetchCollections = async () => {
+      try {
+        // Sending request
+        const response = await fetch(
+          `${process.env.API_URL}/nft/collections_page?startInclusive=0&endExclusive=8`,
+          {
+            headers: {
+              Accept: '*/*',
+              'Content-Type': 'application/json',
+            },
+          }
+        )
+
+        // Extract response's data
+        const data: CollectionsResponse = await response.json()
+
+        if (response.status === 200) {
+          // Update collections
+          setCollections(data.result.collections)
+        }
+      } catch (error) {
+        console.log('An error happened!!!')
+        console.log(error)
+      }
+
+      // Stop loading
+      setLoading(false)
     }
+
+    fetchCollections()
   }, [])
 
   return (
@@ -53,23 +78,29 @@ const Home = (props: CollectionsResponse) => {
         </ActionsContainer>
 
         {/* Collections */}
-        {collectionsData ? (
-          <CollectionsContainer>
-            {collectionsData.map((collection, index) => (
-              <CollectionCard
-                image={
-                  collection.collectionDict.cardImageUrl ||
-                  collection.first_nft.imageUrl
-                }
-                name={collection.collectionDict.displayName}
-                total={collection.total}
-                volume={collection.volume}
-                index={index}
-              />
-            ))}
-          </CollectionsContainer>
+        {!loading ? (
+          <>
+            {collections ? (
+              <CollectionsContainer>
+                {collections.map((collection, index) => (
+                  <CollectionCard
+                    image={
+                      collection.collectionDict.cardImageUrl ||
+                      collection.first_nft.imageUrl
+                    }
+                    name={collection.collectionDict.displayName}
+                    total={collection.total}
+                    volume={collection.volume}
+                    index={index}
+                  />
+                ))}
+              </CollectionsContainer>
+            ) : (
+              <p>No collections.</p>
+            )}
+          </>
         ) : (
-          <p>No collections.</p>
+          <p>Loading NFT collections...</p>
         )}
       </MainContent>
     </>
@@ -77,38 +108,6 @@ const Home = (props: CollectionsResponse) => {
 }
 
 export default Home
-
-Home.getInitialProps = async () => {
-  // Fetches collections
-  const fetchCollections = async () => {
-    try {
-      // Sending request
-      const response = await fetch(
-        `${process.env.API_URL}/nft/collections_page?startInclusive=0&endExclusive=8`,
-        {
-          headers: {
-            Accept: '*/*',
-            'Content-Type': 'application/json',
-          },
-        }
-      )
-
-      // Extract response's data
-      const data: CollectionsResponse = await response.json()
-
-      // Return data
-      return data
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  // Fetch collections
-  const collections = await fetchCollections()
-
-  // Provide data
-  return { collections: collections }
-}
 
 const MainContent = styled.main`
   padding: 24px;

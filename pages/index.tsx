@@ -23,6 +23,7 @@ const Home = (props: CollectionsResponse) => {
   )
 
   useEffect(() => {
+    console.log(props)
     if (props.collections && props.collections.success) {
       // Update collections
       setCollectionsData(props.collections.result.collections)
@@ -67,7 +68,7 @@ const Home = (props: CollectionsResponse) => {
 
 export default Home
 
-Home.getInitialProps = async () => {
+export const getServerSideProps = async () => {
   // Fetches collections
   const fetchCollections = async () => {
     try {
@@ -96,7 +97,7 @@ Home.getInitialProps = async () => {
   const collections = await fetchCollections()
 
   // Provide data
-  return { collections: collections }
+  return { props: { collections: collections } }
 }
 
 const MainContent = styled.main`

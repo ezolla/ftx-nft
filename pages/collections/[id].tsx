@@ -27,13 +27,17 @@ interface CollectionNftsResponse {
 }
 
 const Collection = (data: Props) => {
-  console.log(data)
   // State
   const [details, setDetails] = useState<CollectionDetails | null>(null)
   const [nfts, setNfts] = useState<CollectionNft[] | null>(null)
 
   useEffect(() => {
-    if (data.details.success && data.nfts.success) {
+    if (
+      data.details &&
+      data.details.success &&
+      data.nfts &&
+      data.nfts.success
+    ) {
       // Update state
       setDetails(data.details.result)
       setNfts(data.nfts.result.nfts)
@@ -56,10 +60,16 @@ const Collection = (data: Props) => {
 
       <main>
         {/* Banner & Header */}
-        <DetailsHeader details={details} />
+        {details ? (
+          <DetailsHeader details={details} />
+        ) : (
+          <div style={{ borderBottom: '1px solid var(--color-mercury)' }}>
+            <p style={{ padding: '24px' }}>No available details.</p>
+          </div>
+        )}
 
         {/* Collection's NFTs */}
-        <MainContainer>
+        <NftsContainer>
           {/* Actions */}
           <ActionsSidebar>
             <p>Space for future NFT filtering and searching implementation.</p>
@@ -73,9 +83,9 @@ const Collection = (data: Props) => {
                 : null}
             </GridContainer>
           ) : (
-            <p>No NFTs available.</p>
+            <p style={{ padding: '24px' }}>No NFTs available.</p>
           )}
-        </MainContainer>
+        </NftsContainer>
       </main>
     </>
   )
@@ -83,7 +93,7 @@ const Collection = (data: Props) => {
 
 export default Collection
 
-Collection.getInitialProps = async (ctx) => {
+export const getServerSideProps = async (ctx) => {
   // Define collection ID
   const collectionId = ctx.query.id
 
@@ -142,17 +152,26 @@ Collection.getInitialProps = async (ctx) => {
   const collectionNfts = await fetchCollectionNfts(collectionId as string)
 
   // Provide data
-  return { details: collectionDetails, nfts: collectionNfts }
+  return { props: { details: collectionDetails, nfts: collectionNfts } }
 }
 
-const MainContainer = styled.div`
+const NftsContainer = styled.div`
   display: grid;
   grid-template-columns: 340px 1fr;
+
+  @media (max-width: 860px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `
 
 const ActionsSidebar = styled.aside`
   padding: 24px;
   border-right: 1px solid var(--color-mercury);
+
+  @media (max-width: 860px) {
+    border-right: none;
+    border-bottom: 1px solid var(--color-mercury);
+  }
 `
 
 const GridContainer = styled.div`
@@ -160,4 +179,24 @@ const GridContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 24px;
+
+  @media (max-width: 1280px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 1080px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 860px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 680px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 520px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `

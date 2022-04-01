@@ -90,33 +90,37 @@ const DetailsHeader = ({ details }: Props) => {
 
         {/* Analytics */}
         <AnalyticsContainer>
-          <div>
-            <p>NFTs</p>
-            <p>{details && details.total ? details.total : '-'}</p>
-          </div>
-          <div>
-            <p>Floor</p>
-            <p>{details && details.floor_price ? details.floor_price : '-'}</p>
-          </div>
-          <div>
-            <p>Volume</p>
-            <p>
-              {details && details.volume ? (
-                <CurrencyFormat
-                  value={details.volume.toFixed()}
-                  displayType={'text'}
-                  thousandSeparator={true}
-                  prefix={'$'}
-                />
-              ) : (
-                '-'
-              )}
-            </p>
-          </div>
-          <div>
-            <p>Open Auctions</p>
-            <p>{details ? details.open_auctions : '-'}</p>
-          </div>
+          <AnalyticsContent>
+            <Analytic>
+              <p>NFTs</p>
+              <p>{details && details.total ? details.total : '-'}</p>
+            </Analytic>
+            <Analytic>
+              <p>Floor</p>
+              <p>
+                {details && details.floor_price ? details.floor_price : '-'}
+              </p>
+            </Analytic>
+            <Analytic>
+              <p>Volume</p>
+              <p>
+                {details && details.volume ? (
+                  <CurrencyFormat
+                    value={details.volume.toFixed()}
+                    displayType={'text'}
+                    thousandSeparator={true}
+                    prefix={'$'}
+                  />
+                ) : (
+                  '-'
+                )}
+              </p>
+            </Analytic>
+            <Analytic>
+              <p>Open Auctions</p>
+              <p>{details ? details.open_auctions : '-'}</p>
+            </Analytic>
+          </AnalyticsContent>
         </AnalyticsContainer>
       </CollectionDetails>
     </StyledHeader>
@@ -130,7 +134,11 @@ const StyledHeader = styled.header`
   padding-bottom: 64px;
 `
 
-const BannerContainer = styled.div``
+const BannerContainer = styled.div`
+  @media (max-width: 820px) {
+    display: none;
+  }
+`
 
 const LogoContainer = styled.div`
   img {
@@ -139,9 +147,12 @@ const LogoContainer = styled.div`
 `
 
 const CollectionDetails = styled.div`
-  max-width: 600px;
   margin: -80px auto 0;
   text-align: center;
+
+  @media (max-width: 820px) {
+    margin-top: 20px;
+  }
 `
 
 const TextContainer = styled.div`
@@ -189,25 +200,51 @@ const SocialContainer = styled.div`
 `
 
 const AnalyticsContainer = styled.div`
+  max-width: 600px;
+  padding: 0 24px;
+  margin: 0 auto;
+`
+
+const AnalyticsContent = styled.div`
   border: 1px solid var(--color-mercury);
   border-radius: 10px;
   margin-top: 16px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
 
-  div {
-    padding: 20px;
-    text-align: left;
+  @media (max-width: 680px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+`
 
-    p:last-child {
-      color: var(--color-black);
-      font-size: 18px;
-      font-weight: 500;
-      margin-top: 8px;
+const Analytic = styled.div`
+  padding: 20px;
+  text-align: left;
+
+  p:last-child {
+    color: var(--color-black);
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: 8px;
+  }
+
+  :not(:last-child) {
+    border-right: 1px solid var(--color-mercury);
+  }
+
+  @media (max-width: 680px) {
+    :nth-child(1),
+    :nth-child(3) {
+      border-right: 1px solid var(--color-mercury);
     }
 
-    :not(:last-child) {
-      border-right: 1px solid var(--color-mercury);
+    :nth-child(1),
+    :nth-child(2) {
+      border-bottom: 1px solid var(--color-mercury);
+    }
+
+    :nth-child(2) {
+      border-right: none;
     }
   }
 `

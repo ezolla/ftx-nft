@@ -67,6 +67,7 @@ const StyledCollectionCard = styled.div`
   background: var(--color-alabaster);
   border: 1px solid var(--color-mercury);
   border-radius: 8px;
+  height: 100%;
   transition: 0.2s ease;
 
   :hover {
@@ -77,7 +78,7 @@ const StyledCollectionCard = styled.div`
 
 const ImageContainer = styled.div`
   img {
-    border-radius: 7px;
+    border-radius: 10px;
   }
 `
 

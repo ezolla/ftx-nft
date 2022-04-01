@@ -41,8 +41,12 @@ export default NFTCard
 const StyledNFTCard = styled.div`
   background: var(--color-alabaster);
   border: 1px solid var(--color-mercury);
-  border-radius: 8px;
+  border-radius: 10px;
   transition: 0.2s ease;
+
+  img {
+    border-radius: 10px;
+  }
 
   :hover {
     border: 1px solid var(--color-black);

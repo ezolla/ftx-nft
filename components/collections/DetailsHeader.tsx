@@ -14,7 +14,7 @@ const DetailsHeader = ({ details }: Props) => {
     <StyledHeader>
       {/* Banner */}
       <BannerContainer>
-        {details ? (
+        {details && details.collectionDict.bannerImageUrl ? (
           <Image
             src={details.collectionDict.bannerImageUrl}
             alt={details.collectionDict.displayName}
@@ -22,21 +22,38 @@ const DetailsHeader = ({ details }: Props) => {
             height={220}
             layout='responsive'
           />
-        ) : null}
+        ) : (
+          <Image
+            src='https://i.imgur.com/yQmxCQS.png'
+            alt='Placeholder'
+            width={1512}
+            height={220}
+            layout='responsive'
+          />
+        )}
       </BannerContainer>
 
       {/* Details */}
       <CollectionDetails>
         {/* Logo */}
         <LogoContainer>
-          {details ? (
+          {details &&
+          details.collectionDict.avatarImageUrl &&
+          details.collectionDict.displayName ? (
             <Image
               src={details.collectionDict.avatarImageUrl}
               alt={details.collectionDict.displayName}
               width={150}
               height={150}
             />
-          ) : null}
+          ) : (
+            <Image
+              src='https://i.imgur.com/AWgnjF3.png'
+              alt='Placeholder'
+              width={150}
+              height={150}
+            />
+          )}
         </LogoContainer>
 
         {/* Title & Description */}

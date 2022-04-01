@@ -13,7 +13,14 @@ const NFTCard = ({ nft }: Props) => {
       {/* Image */}
       {nft ? (
         <Image src={nft.imageUrl} alt={nft.name} width={500} height={500} />
-      ) : null}
+      ) : (
+        <Image
+          src='https://i.imgur.com/AWgnjF3.png'
+          alt='Placeholder'
+          width={500}
+          height={500}
+        />
+      )}
 
       {/* Details */}
       <NFTDetails>
@@ -50,7 +57,6 @@ const StyledNFTCard = styled.div`
 
   :hover {
     border: 1px solid var(--color-black);
-    cursor: pointer;
   }
 `
 

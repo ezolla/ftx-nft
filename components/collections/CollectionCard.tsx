@@ -12,7 +12,6 @@ interface Props extends React.HTMLProps<HTMLDivElement> {
 }
 
 const CollectionCard = ({ image, name, total, volume, index }: Props) => {
-  console.log({ image, name, total })
   return (
     <Link href={`/collections/${name}`}>
       <a>

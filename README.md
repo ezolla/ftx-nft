@@ -28,3 +28,4 @@ Check out the [Figma](https://www.figma.com/file/qj8Wkrui9m4BAFVMDTn36c/FTX-NFT?
 - [ ] Searching on both collections and NFTs
 - [ ] Sorting collections by issuer (all, eth, sol, ftt)
 - [ ] Individual NFT page with in-depth details
+- [ ] Improved loading states and no data states

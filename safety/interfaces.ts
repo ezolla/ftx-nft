@@ -52,11 +52,11 @@ interface FirstNft {
 }
 
 interface Attributes {
-  [key: string]: string
+  [key: string]: string | number
 }
 
 interface AttributesList {
-  value: string
+  value: string | number
   trait_type: string
 }
 
@@ -82,12 +82,16 @@ interface CollectionDict {
   createdAt: number
   featured: boolean
   position: number
-  avatarImageUrl: string
-  avatarImageId: number
-  bannerImageUrl: string
-  bannerImageId: number
-  cardImageUrl: string
-  cardImageId: number
+  avatarImageUrl?: string
+  avatarImageId?: number
+  bannerImageUrl?: string
+  bannerImageId?: number
+  cardImageUrl?: string
+  cardImageId?: number
+  darkBackgroundImageUrl?: string
+  darkBackgroundImageId?: number
+  lightBackgroundImageUrl?: string
+  lightBackgroundImageId?: number
 }
 
 export interface CollectionDetails {

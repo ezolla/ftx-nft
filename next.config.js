@@ -8,6 +8,7 @@ const moduleExports = {
       'i.imgur.com',
       'static.ftx.com',
       'arweave.net',
+      'www.arweave.net',
       'lh3.googleusercontent.com',
     ],
   },
